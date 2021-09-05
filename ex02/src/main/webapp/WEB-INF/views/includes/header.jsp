@@ -304,7 +304,7 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
+                            <a href="${pageContext.request.contextPath }/employee/list"><i class="fa fa-table fa-fw"></i>인사관리</a>
                         </li>
                         
                         <li>
