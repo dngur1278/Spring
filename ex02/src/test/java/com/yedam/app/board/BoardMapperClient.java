@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.yedam.app.board.domain.BoardVO;
+import com.yedam.app.board.domain.Criteria;
 import com.yedam.app.board.mapper.BoardMapper;
 import com.yedam.app.board.service.BoardService;
 
@@ -21,11 +22,14 @@ import lombok.extern.java.Log;
 public class BoardMapperClient {
 
 	@Autowired
-	BoardService boardMapper;
+	BoardMapper boardMapper;
 	
 	@Test
 	public void getList() {
-		log.info(boardMapper.getList().toString());
+		Criteria cri = new Criteria(1,20);
+		cri.setType("W");
+		cri.setKeyword("kang");
+		log.info(boardMapper.getList(cri).toString());
 	}
 	
 	//@Test
