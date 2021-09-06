@@ -59,9 +59,12 @@
 						<input class="form-control" name="departmentId" value="${employee.departmentId }">
 					</div>
 	                
+	                <input type="hidden" name="pageNum" value="${cri.pageNum}">
+	                <input type="hidden" name="amount" value="${cri.amount}">
+	                
 	                <button type="submit" class="btn btn-default">Modify</button>
 	                <button type="submit" formaction="delete" class="btn btn-danger">Remove</button>
-	                <button type="button" class="btn btn-info" onclick="location.href='list'">List</button>
+	                <a class="btn btn-info" href="list?pageNum=${cri.pageNum}&amount=${cri.amount}">List</a>
 	        	</form>
 			</div>
 			<!-- end panel-body -->

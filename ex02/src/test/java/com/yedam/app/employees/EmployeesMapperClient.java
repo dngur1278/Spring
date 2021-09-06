@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.yedam.app.board.domain.Criteria;
 import com.yedam.app.employees.domain.EmployeesVO;
 import com.yedam.app.employees.mapper.EmployeesMapper;
 
@@ -26,9 +27,10 @@ public class EmployeesMapperClient {
 	@Autowired
 	EmployeesMapper employeesMapper;
 	
-	//@Test
+	@Test
 	public void getList() {
-		log.info(employeesMapper.getList().toString());
+		Criteria cri = new Criteria(1, 10);
+		log.info(employeesMapper.getList(cri).toString());
 	}
 	
 	//@Test
@@ -77,7 +79,7 @@ public class EmployeesMapperClient {
 		assertEquals(result, 1);
 	}
 	
-	@Test
+	//@Test
 	public void delete() {
 		EmployeesVO evo = new EmployeesVO();
 		evo.setEmployeeId("301");

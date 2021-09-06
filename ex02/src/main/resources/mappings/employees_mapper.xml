@@ -3,75 +3,110 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yedam.app.employees.mapper.EmployeesMapper">
-	<select id="getList" resultType="EmployeesVO">
-		SELECT EMPLOYEE_ID,
-			   FIRST_NAME,
-			   LAST_NAME,
-			   EMAIL,
-			   PHONE_NUMBER,
-			   HIRE_DATE,
-			   JOB_ID,
-			   SALARY,
-			   COMMISSION_PCT,
-			   MANAGER_ID,
-			   DEPARTMENT_ID
-		FROM EMPLOYEES
-		ORDER BY EMPLOYEE_ID
+
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach collection="typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'E'.toString()">
+							EMPLOYEE_ID LIKE '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'J'.toString()">
+							JOB_ID LIKE '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'H'.toString()">
+							HIRE_DATE LIKE '%' || #{keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+	<select id="getTotalCounts" resultType="int">
+		SELECT COUNT(*) FROM
+		EMPLOYEES
+		<where>
+			<include refid="criteria"></include>
+			EMPLOYEE_ID > 0
+		</where>
 	</select>
-	
-	<select id="read" resultType="EmployeesVO" parameterType="EmployeesVO">
+
+	<select id="getList" resultType="EmployeesVO">
+		SELECT * 
+		FROM ( SELECT /*+ INDEX_DESC(EMPLOYEES EMP_EMP_ID_PK)*/
+		ROWNUM
+		RN, EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL,
+		PHONE_NUMBER, HIRE_DATE,
+		JOB_ID, SALARY, COMMISSION_PCT,
+		MANAGER_ID, DEPARTMENT_ID
+		FROM EMPLOYEES
+		<where>
+			<include refid="criteria"></include>
+			<![CDATA[ ROWNUM <= #{pageNum} * #{amount} ]]>
+		</where> 
+		)
+		WHERE RN > (#{pageNum} -1) * #{amount}
+	</select>
+
+	<select id="read" resultType="EmployeesVO"
+		parameterType="EmployeesVO">
 		SELECT EMPLOYEE_ID,
-			   FIRST_NAME,
-			   LAST_NAME,
-			   EMAIL,
-			   PHONE_NUMBER,
-			   HIRE_DATE,
-			   JOB_ID,
-			   SALARY,
-			   COMMISSION_PCT,
-			   MANAGER_ID,
-			   DEPARTMENT_ID
+		FIRST_NAME,
+		LAST_NAME,
+		EMAIL,
+		PHONE_NUMBER,
+		HIRE_DATE,
+		JOB_ID,
+		SALARY,
+		COMMISSION_PCT,
+		MANAGER_ID,
+		DEPARTMENT_ID
 		FROM EMPLOYEES
 		WHERE EMPLOYEE_ID = #{employeeId}
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO EMPLOYEES(
-			EMPLOYEE_ID,
-			FIRST_NAME,
-			LAST_NAME,
-			EMAIL,
-			PHONE_NUMBER,
-			HIRE_DATE,
-			JOB_ID,
-			SALARY,
-			DEPARTMENT_ID)
+		EMPLOYEE_ID,
+		FIRST_NAME,
+		LAST_NAME,
+		EMAIL,
+		PHONE_NUMBER,
+		HIRE_DATE,
+		JOB_ID,
+		SALARY,
+		DEPARTMENT_ID)
 		VALUES (
-			#{employeeId},
-			#{firstName},
-			#{lastName},
-			#{email},
-			#{phoneNumber},
-			#{hireDate},
-			#{jobId},
-			#{salary},
-			#{departmentId})
+		#{employeeId},
+		#{firstName},
+		#{lastName},
+		#{email},
+		#{phoneNumber},
+		#{hireDate},
+		#{jobId},
+		#{salary},
+		#{departmentId})
 	</insert>
-	
+
 	<delete id="delete">
 		DELETE FROM EMPLOYEES
-		WHERE EMPLOYEE_ID = #{employeeId}
+		WHERE EMPLOYEE_ID =
+		#{employeeId}
 	</delete>
-	
+
 	<update id="update">
 		UPDATE EMPLOYEES
 		SET FIRST_NAME = #{firstName},
-			LAST_NAME = #{lastName},
-			EMAIL = #{email},
-			PHONE_NUMBER = #{phoneNumber},
-			JOB_ID = #{jobId},
-			SALARY = #{salary},
-			DEPARTMENT_ID = #{departmentId}
+		LAST_NAME = #{lastName},
+		EMAIL = #{email},
+		PHONE_NUMBER =
+		#{phoneNumber},
+		JOB_ID = #{jobId},
+		SALARY = #{salary},
+		DEPARTMENT_ID =
+		#{departmentId}
 		WHERE EMPLOYEE_ID = #{employeeId}
 	</update>
 </mapper>
