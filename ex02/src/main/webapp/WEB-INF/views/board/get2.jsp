@@ -77,48 +77,43 @@
 	<!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
+
+<script src="../resources/js/reply.js">
+	
+</script>
+
 <script>
 	let bno = "${board.bno}";
 	$(function() {
 		//등록처리
 		$("#saveReply").on("click", function() {
-			$.ajax({
-				url : "../reply/",
-				method : "post",
-				data : $("#replyForm").serialize(),
-				dataType : "json",
-				success : function(data) {
-					$('.chat').append( makeLi(data) );
-				}
+			replyService.add(function (data) {
+				$('.chat').append( makeLi(data) );
 			});
 		});
+
+		// 목록조회
+		replyService.getList({bno:bno, listCallback})
+		
+		function listCallback (datas) {
+			str = "";
+			for (i = 0; i < datas.length; i++) {
+				str += makeLi(datas[i]);
+			}
+			$(".chat").html(str);
+		}
 		
 		function makeLi(data) {
 			return '<li class="left clearfix">'
 					+ '	<div>'
 					+ '		<div class="header">'
-					+ '			<strong class="primary-font">'+ data.replyer+ '</strong>'
-					+ '			<small class="pull-right text-muted">'+ data.replyDate+ '</small>' 
+					+ '			<strong class="primary-font">' + data.replyer + '</strong>'
+					+ '			<small class="pull-right text-muted">'+ data.replyDate + '</small>' 
 					+ '		</div>'
-					+ '		<p>' + data.reply + '</p>' 
+					+ '		<p>' + data.reply+ '</p>' 
 					+ '	</div>'
-					+ '</li>';
+					+ '</li>'
 		}
-
-		// 목록조회
-		$.ajax({
-			url : "../reply/",
-			data : {bno : bno}, //"bno=1"
-			dataType : "json",
-			success : function(datas) {
-				//console.log(datas);
-				str = "";
-				for (i = 0; i < datas.length; i++) {
-					str += makeLi(datas[i]);
-				}
-				$(".chat").html(str);
-			}
-		});
 	});
 </script>
 <%@ include file="/WEB-INF/views/includes/footer.jsp"%>

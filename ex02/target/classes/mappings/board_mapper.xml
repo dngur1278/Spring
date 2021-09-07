@@ -50,14 +50,13 @@
 
 	<select id="read" resultType="BoardVO" parameterType="BoardVO">
 		SELECT BNO,
-		TITLE,
-		CONTENT,
-		WRITER,
-		REGDATE,
-		UPDATEDATE
+			   TITLE,
+			   CONTENT,
+			   WRITER,
+			   REGDATE,
+			   UPDATEDATE
 		FROM TBL_BOARD
-		WHERE BNO =
-		#{bno}
+		WHERE BNO = #{bno}
 	</select>
 
 	<insert id="insert">
@@ -66,15 +65,15 @@
 			SELECT SEQ_BOARD.NEXTVAL FROM DUAL
 		</selectKey>
 		INSERT INTO TBL_BOARD(
-		BNO,
-		TITLE,
-		CONTENT,
-		WRITER)
+			BNO,
+			TITLE,
+			CONTENT,
+			WRITER)
 		VALUES(
-		#{bno},
-		#{title},
-		#{content},
-		#{writer})
+			#{bno},
+			#{title},
+			#{content},
+			#{writer})
 	</insert>
 
 	<delete id="delete">
@@ -85,10 +84,9 @@
 	<update id="update">
 		UPDATE TBL_BOARD
 		SET TITLE = #{title},
-		CONTENT =
-		#{content},
-		WRITER = #{writer},
-		UPDATEDATE = sysdate
+			CONTENT = #{content},
+			WRITER = #{writer},
+			UPDATEDATE = sysdate
 		WHERE BNO = #{bno}
 	</update>
 </mapper>
