@@ -44,6 +44,7 @@
 							<th>번호</th>
 							<th>제목</th>
 							<th>작성일</th>
+							<th>댓글수</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -53,6 +54,7 @@
 								<td><a class="move" href="${board.bno}">${board.title}</a></td>
 								<td><fmt:formatDate value="${board.regdate}" type="both"
 										pattern="yyyy-MM-dd [E]" /></td>
+								<td>${board.replyCnt}</td>
 							</tr>
 						</c:forEach>
 					</tbody>

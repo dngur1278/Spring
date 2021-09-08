@@ -4,6 +4,13 @@
 
 <mapper namespace="com.yedam.app.board.mapper.BoardMapper">
 
+	<!-- 댓글 수 업데이트 -->
+	<update id="updateReplycnt">
+		UPDATE TBL_BOARD 
+		SET REPLYCNT = REPLYCNT + #{amount}
+		WHERE BNO = #{bno}
+	</update>
+
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 			<foreach collection="typeArr" item="type">
@@ -37,8 +44,7 @@
 
 		SELECT *
 		FROM ( SELECT /*+ INDEX_DESC(TBL_BOARD SYS_C007183) */
-		ROWNUM
-		RN, BNO, TITLE, CONTENT, WRITER, REGDATE
+		ROWNUM RN, BNO, TITLE, CONTENT, WRITER, REGDATE, REPLYCNT
 		FROM TBL_BOARD
 		<where>
 			<include refid="criteria"></include>    

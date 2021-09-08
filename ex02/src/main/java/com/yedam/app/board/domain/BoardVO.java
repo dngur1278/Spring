@@ -18,4 +18,5 @@ public class BoardVO {
 	private Date regdate;	 // 작성일
 	@JsonIgnore
 	private Date updatedate; // 수정일 
+	private int replyCnt;	 // 댓글 수
 }

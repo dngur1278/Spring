@@ -24,7 +24,7 @@ public class ReplyMapperTest {
 	@Autowired
 	ReplyService replyService; 
 	
-	//@Test
+	@Test
 	public void getList() {
 		Criteria cri = new Criteria(1,20);
 		log.info(replyService.replyGetList(cri, 1L).toString());
@@ -41,7 +41,7 @@ public class ReplyMapperTest {
 		log.info(vo.toString());
 	}
 	
-	@Test
+	//@Test
 	public void update() {
 		ReplyVO vo = new ReplyVO();
 		vo.setRno(15L);

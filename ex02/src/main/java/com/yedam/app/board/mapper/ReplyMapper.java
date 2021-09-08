@@ -10,7 +10,7 @@ import com.yedam.app.board.domain.ReplyVO;
 public interface ReplyMapper {
 	
 	public List<ReplyVO> replyGetList(@Param("cri") Criteria cri, 
-								 @Param("bno") Long bno);
+								 	  @Param("bno") Long bno);
 	
 	public ReplyVO replyRead(ReplyVO vo);
 	
@@ -19,4 +19,7 @@ public interface ReplyMapper {
 	public int replyUpdate(ReplyVO vo);
 	
 	public int replyDelete(ReplyVO vo);
+	
+	// 전체 댓글 수
+	public int getCountByBno(Long bno);
 }

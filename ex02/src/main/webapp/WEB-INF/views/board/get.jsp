@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="/WEB-INF/views/includes/header.jsp"%>
 
 <div class="row">
@@ -55,21 +56,24 @@
 						<div class="panel-heading">
 							<i class="fa fa-comments fa-fw"></i> Reply
 						</div>
-
+						<form id="replyForm">
+							<input type="hidden" name="bno" value="${board.bno}"> <input
+								name="replyer" value="user10"> <input name="reply">
+							<button id="saveReply" class="btn btn-primary btn-xs pull-right">댓글
+								등록</button>
+						</form>
 						<div class="panel-body">
 							<ul class="chat">
 
 							</ul>
 						</div>
+						
+						<div class="panel-footer">
+						
+						</div>
 					</div>
 				</div>
 			</div>
-			<form id="replyForm">
-				<input type="hidden" name="bno" value="${board.bno}"> 
-				<input name="replyer" value="user10"> 
-				<input name="reply">
-				<button id="saveReply" class="btn btn-primary btn-xs pull-right">댓글 등록</button>
-			</form>
 			<!-- end panel-body -->
 		</div>
 		<!-- /.panel -->
@@ -88,37 +92,44 @@
 				data : $("#replyForm").serialize(),
 				dataType : "json",
 				success : function(data) {
-					$('.chat').append( makeLi(data) );
+					$('.chat').append(makeLi(data));
 				}
 			});
 		});
-		
+
 		function makeLi(data) {
-			return '<li class="left clearfix">'
+			return '<li class="left clearfix">' 
 					+ '	<div>'
 					+ '		<div class="header">'
-					+ '			<strong class="primary-font">'+ data.replyer+ '</strong>'
-					+ '			<small class="pull-right text-muted">'+ data.replyDate+ '</small>' 
-					+ '		</div>'
+					+ '			<strong class="primary-font">' + data.replyer + '</strong>' 
+					+ '			<small class="pull-right text-muted">' + data.replyDate + '</small>' 
+					+ '		</div>' 
 					+ '		<p>' + data.reply + '</p>' 
-					+ '	</div>'
+					+ '	</div>' 
 					+ '</li>';
 		}
 
 		// 목록조회
 		$.ajax({
 			url : "../reply/",
-			data : {bno : bno}, //"bno=1"
+			data : {
+				bno : bno
+			}, //"bno=1"
 			dataType : "json",
 			success : function(datas) {
-				//console.log(datas);
+				console.log(datas);
 				str = "";
-				for (i = 0; i < datas.length; i++) {
-					str += makeLi(datas[i]);
+				for (i = 0; i < datas.list.length; i++) {
+					str += makeLi(datas.list[i]);
 				}
 				$(".chat").html(str);
 			}
 		});
+		
+		var pageNum = 1;
+		var replyPageFooter = $(".panel-footer");
+		
 	});
 </script>
+
 <%@ include file="/WEB-INF/views/includes/footer.jsp"%>

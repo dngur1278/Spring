@@ -1,15 +1,14 @@
 package com.yedam.app.board.service;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 import com.yedam.app.board.domain.Criteria;
+import com.yedam.app.board.domain.ReplyPageVO;
 import com.yedam.app.board.domain.ReplyVO;
 
 public interface ReplyService {
 
-	public List<ReplyVO> replyGetList(@Param("cri") Criteria cri, @Param("bno") Long bno);
+	public ReplyPageVO replyGetList(@Param("cri") Criteria cri, @Param("bno") Long bno);
 
 	public ReplyVO replyRead(ReplyVO vo);
 
@@ -18,4 +17,7 @@ public interface ReplyService {
 	public int replyUpdate(ReplyVO vo);
 
 	public int replyDelete(ReplyVO vo);
+	
+	// 전체 댓글 수
+	public int getCountByBno(Long bno);
 }
