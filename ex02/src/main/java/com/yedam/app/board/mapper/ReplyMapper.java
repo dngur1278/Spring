@@ -22,4 +22,6 @@ public interface ReplyMapper {
 	
 	// 전체 댓글 수
 	public int getCountByBno(Long bno);
+	
+	public void replyDeleteAll(Long bno);
 }

@@ -48,6 +48,13 @@
 					<a class="btn btn-info"
 						href="list?pageNum=${cri.pageNum}&amount=${cri.amount}">List</a>
 				</form>
+				
+				<!-- 첨부파일 -->
+				<div>
+					<c:forEach items="${board.attachList}" var="attach">
+						<a href="download?uuid=${attach.uuid}">${attach.fileName}</a>
+					</c:forEach>
+				</div>
 			</div>
 
 			<div class="row">
@@ -83,16 +90,47 @@
 <!-- /.row -->
 <script>
 	let bno = "${board.bno}";
+	let replyCnt = ${board.replyCnt};
+	let re = $(".chat");
+	
 	$(function() {
 		//등록처리
+		
+		showList(1, replyCnt);
+		
 		$("#saveReply").on("click", function() {
+			e.preventDefault();
+			
+			let reply = $("input[name='reply']").val();
+			let replyer = $("input[name='replyer']").val();
+			
+			if (reply == "" || replyer == "") {
+				return;
+			}
+			
 			$.ajax({
 				url : "../reply/",
 				method : "post",
 				data : $("#replyForm").serialize(),
 				dataType : "json",
 				success : function(data) {
-					$('.chat').append(makeLi(data));
+					
+					$.ajax({
+						url: "../reply/",
+						method: "get",
+						dataType: "json",
+						success : function(data) {
+							console.log(data);
+							replyCnt = data;
+							showList(1, replyCnt);
+						},
+						error : function() {
+							console.error();
+						}
+					});
+				},
+				error : function(){
+					alert("등록 실패");
 				}
 			});
 		});
@@ -111,7 +149,7 @@
 		
 		var pageNum = 1;
 		var replyPageFooter = $(".panel-footer");
-		function showReplyPage(replyCnt) {
+		function showReplyPage(replyCnt, pageNum) {
 			
 			var endNum = Math.ceil(pageNum / 10.0) * 10;
 			var startNum = endNum - 9;
@@ -158,30 +196,54 @@
 			
 			pageNum = targetPageNum;
 			
+			showList(pageNum, replyCnt);
 			
 		});
-
-		// 목록조회
-		$.ajax({
-			url : "../reply/",
-			data : {
-				bno : bno
-			}, //"bno=1"
-			dataType : "json",
-			success : function(datas) {
-				console.log(datas);
-				str = "";
-				for (i = 0; i < datas.list.length; i++) {
-					str += makeLi(datas.list[i]);
-				}
-				
-				$(".chat").html(str);
-				showReplyPage(datas.replyCnt);
-				
-				
-			}
-		});
 		
+		// 댓글 보여주기
+		function showList(pageNum, replyCnt){
+			//초기화
+			$('.chat').empty();
+			$('.chatPageNum').empty();
+			
+			// 다시그리기
+			$.ajax({
+				url : '../reply/',
+				data : {bno: bno},
+				method : 'get',
+				dataType : 'json',
+				success : function(data) {
+					console.log(data);
+					let str = "";
+					for (i = 0; i < data.list.length; i++) {
+						str += makeLi(data.list[i]);
+					}
+					$(".chat").html(str);
+					showReplyPage(replyCnt);
+				},
+			});
+		}
+		
+		/* function list(page) {
+		// 목록조회
+			$.ajax({
+				url : "../reply/",
+				data : {
+					bno : bno
+				}, //"bno=1"
+				dataType : "json",
+				success : function(datas) {
+					console.log(datas);
+					str = "";
+					for (i = 0; i < datas.list.length; i++) {
+						str += makeLi(datas.list[i]);
+					}
+					
+					$(".chat").html(str);
+					showReplyPage(datas.replyCnt, page);	
+				}
+			});
+		} */
 	});
 </script>
 
