@@ -89,16 +89,26 @@
 </div>
 <!-- /.row -->
 <script>
-	let bno = "${board.bno}";
-	let replyCnt = ${board.replyCnt};
-	let re = $(".chat");
-	
 	$(function() {
+		
+		let bno = "${board.bno}";
+		let replyCnt = ${board.replyCnt};
+		let re = $(".chat");
+		
+		function makeLi(data) {
+			return '<li class="left clearfix">' 
+					+ '	<div>'
+					+ '		<div class="header">'
+					+ '			<strong class="primary-font">' + data.replyer + '</strong>' 
+					+ '			<small class="pull-right text-muted">' + data.replyDate + '</small>' 
+					+ '		</div>' 
+					+ '		<p>' + data.reply + '</p>' 
+					+ '	</div>' 
+					+ '</li>';
+		}
+		
 		//등록처리
-		
-		showList(1, replyCnt);
-		
-		$("#saveReply").on("click", function() {
+		$("#saveReply").on("click", function(e) {
 			e.preventDefault();
 			
 			let reply = $("input[name='reply']").val();
@@ -134,21 +144,11 @@
 				}
 			});
 		});
-
-		function makeLi(data) {
-			return '<li class="left clearfix">' 
-					+ '	<div>'
-					+ '		<div class="header">'
-					+ '			<strong class="primary-font">' + data.replyer + '</strong>' 
-					+ '			<small class="pull-right text-muted">' + data.replyDate + '</small>' 
-					+ '		</div>' 
-					+ '		<p>' + data.reply + '</p>' 
-					+ '	</div>' 
-					+ '</li>';
-		}
 		
 		var pageNum = 1;
 		var replyPageFooter = $(".panel-footer");
+		
+		//페이징 처리 부분
 		function showReplyPage(replyCnt, pageNum) {
 			
 			var endNum = Math.ceil(pageNum / 10.0) * 10;
@@ -183,7 +183,36 @@
 			
 			str += "</ul></div>"
 			
+			console.log(str);
+			
 			replyPageFooter.html(str);
+		}
+		
+		// 댓글 보여주기
+		function showList(pageNum, replyCnt){
+			//초기화
+			$('.chat').empty();
+			$('.chatPageNum').empty();
+			
+			// 다시그리기
+			$.ajax({
+				url : '../reply/' + pageNum,
+				data : {bno: bno},
+				method : 'get',
+				dataType : 'json',
+				success : function(data) {
+					console.log(data);
+					let str = "";
+					for (i = 0; i < data.length; i++) {
+						str += makeLi(data[i]);
+					}
+					$(".chat").html(str);
+					showReplyPage(replyCnt);
+				},
+				error : function(e) {
+					console.log(e);
+				}
+			});
 		}
 		
 		replyPageFooter.on("click", "li a", function(e) {
@@ -200,50 +229,8 @@
 			
 		});
 		
-		// 댓글 보여주기
-		function showList(pageNum, replyCnt){
-			//초기화
-			$('.chat').empty();
-			$('.chatPageNum').empty();
-			
-			// 다시그리기
-			$.ajax({
-				url : '../reply/',
-				data : {bno: bno},
-				method : 'get',
-				dataType : 'json',
-				success : function(data) {
-					console.log(data);
-					let str = "";
-					for (i = 0; i < data.list.length; i++) {
-						str += makeLi(data.list[i]);
-					}
-					$(".chat").html(str);
-					showReplyPage(replyCnt);
-				},
-			});
-		}
+		showList(1, replyCnt);
 		
-		/* function list(page) {
-		// 목록조회
-			$.ajax({
-				url : "../reply/",
-				data : {
-					bno : bno
-				}, //"bno=1"
-				dataType : "json",
-				success : function(datas) {
-					console.log(datas);
-					str = "";
-					for (i = 0; i < datas.list.length; i++) {
-						str += makeLi(datas.list[i]);
-					}
-					
-					$(".chat").html(str);
-					showReplyPage(datas.replyCnt, page);	
-				}
-			});
-		} */
 	});
 </script>
 

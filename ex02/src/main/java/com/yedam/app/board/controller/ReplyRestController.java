@@ -25,7 +25,8 @@ public class ReplyRestController {
 	
 	// 헤당 게시글의 댓글만
 	@GetMapping("/")
-	public ReplyPageVO replyGetList(Criteria cri, @RequestParam Long bno) {
+	public ReplyPageVO replyGetList(Criteria cri, @RequestParam Long bno, @PathVariable int pageNum) {
+		cri = new Criteria(pageNum, 10);
 		return replyService.replyGetList(cri, bno);
 	}
 	

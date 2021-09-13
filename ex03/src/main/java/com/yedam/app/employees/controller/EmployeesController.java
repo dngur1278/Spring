@@ -59,8 +59,8 @@ public class EmployeesController {
 		return "employee/register";
 	}
 	
-	// 등록처리
-	@PostMapping("/register")
+	// 등록, 수정 처리
+	@PostMapping(value = {"/register", "/update"})
 	public String register(EmployeesVO evo) {
 		
 		if (evo.getEmployeeId() == null) {
@@ -68,6 +68,14 @@ public class EmployeesController {
 		} else {
 			employeesService.update(evo);
 		}
+		return "redirect:/employee/list";
+	}
+	
+	//삭제처리
+	@PostMapping("/delete")
+	public String delete(EmployeesVO evo) {
+		evo.getEmployeeId();
+		employeesService.delete(evo);
 		return "redirect:/employee/list";
 	}
 	

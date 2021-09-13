@@ -10,8 +10,7 @@
 	</select>
 	
 	<select id="deptRead" resultType="DepartmentsVO">
-		SELECT DEPARTMENT_ID,
-			   DEPARTMENT_NAME,
+		SELECT DEPARTMENT_NAME,
 			   MANAGER_ID,
 			   LOCATION_ID
 		FROM DEPARTMENTS
@@ -21,7 +20,7 @@
 	<insert id="insert">
 		<selectKey keyProperty="departmentId" resultType="string"
 				   order="BEFORE">
-			SELECT DEPARTMENTS_SEQ FROM DUAL
+			SELECT DEPARTMENTS_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
 			INSERT INTO 
 				DEPARTMENTS
@@ -40,7 +39,7 @@
 		UPDATE DEPARTMENTS
 		SET DEPARTMENT_NAME = #{departmentName},
 			MANAGER_ID = #{managerId},
-			LOCATRION_ID = #{locationId}
+			LOCATION_ID = #{locationId}
 		WHERE DEPARTMENT_ID = #{departmentId} 
 	</update>
 	

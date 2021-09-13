@@ -4,9 +4,7 @@
 
 
 <link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-	integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-	crossorigin="anonymous">
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
 <style>
 	.require {
 		color : red;
@@ -103,9 +101,11 @@
 			
 			<c:if test="${empty emp}">
 				<button type="button" id="btnRegister" class="btn btn-secondary">등록</button>
+				<button type="reset" class="btn btn-secondary">취소</button>
 			</c:if>
 			<c:if test="${not empty emp}">
-				<button type="button" id="btnRegister" class="btn btn-secondary">수정</button>
+				<button type="button" id="btnUpdate" class="btn btn-secondary">수정</button>
+				<button type="submit" formaction="delete" id="btnDelete" class="btn btn-secondary">삭제</button>
 			</c:if>
 		</form>
 	</div>
@@ -162,6 +162,13 @@
 		
 		// 등록 버튼
 		$("#btnRegister").on("click", function() {
+			if (validation() == true) {
+				frm.submit();
+			}
+		});
+		
+		//수정 버튼
+		$("#btnUpdate").on("click", function() {
 			if (validation() == true) {
 				frm.submit();
 			}

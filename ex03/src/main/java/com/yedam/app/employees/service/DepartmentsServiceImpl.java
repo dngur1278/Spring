@@ -18,4 +18,24 @@ public class DepartmentsServiceImpl implements DepartmentsService {
 		return departmentsMapper.getDeptList();
 	}
 
+	@Override
+	public DepartmentsVO deptRead(DepartmentsVO vo) {
+		return departmentsMapper.deptRead(vo);
+	}
+
+	@Override
+	public int insert(DepartmentsVO vo) {
+		return departmentsMapper.insert(vo);
+	}
+
+	@Override
+	public int update(DepartmentsVO vo) {
+		return departmentsMapper.update(vo);
+	}
+
+	@Override
+	public int delete(DepartmentsVO vo) {
+		return departmentsMapper.delete(vo);
+	}
+
 }

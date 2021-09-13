@@ -26,21 +26,21 @@
 				</tr>
 			</thead>
 			<tbody>
-					<c:forEach items="${list}" var="emp">
-						<tr>
-							<td><a href="update?employeeId=${emp.employeeId}">${emp.employeeId}</a></td>
-							<td>${emp.firstName}</td>
-							<td>${emp.lastName}</td>
-							<td>${emp.email}</td>
-							<td>${emp.phoneNumber}</td>
-							<td>${emp.hireDate}</td>
-							<td>${emp.jobId}</td>
-							<td>${emp.salary}</td>
-							<td>${emp.commissionPct}</td>
-							<td>${emp.managerId}</td>
-							<td>${emp.departmentId}</td>
-						</tr>
-					</c:forEach>
+				<c:forEach items="${list}" var="emp">
+					<tr>
+						<td><a href="update?employeeId=${emp.employeeId}">${emp.employeeId}</a></td>
+						<td>${emp.firstName}</td>
+						<td>${emp.lastName}</td>
+						<td>${emp.email}</td>
+						<td>${emp.phoneNumber}</td>
+						<td>${emp.hireDate}</td>
+						<td>${emp.jobId}</td>
+						<td>${emp.salary}</td>
+						<td>${emp.commissionPct}</td>
+						<td>${emp.managerId}</td>
+						<td>${emp.departmentId}</td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>
